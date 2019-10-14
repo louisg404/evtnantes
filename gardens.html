@@ -33,7 +33,7 @@
   </style>
   </head>
 
-  <body style="background-image: url(wavee.svg); background-repeat: no-repeat;">
+  <body style="background-image: url(wavee.svg); background-repeat: no-repeat; background-size: contain;">
   	<div class="container" style="margin-top: 5%; font-family: 'Roboto', sans-serif;" id="demo">
   		<h1 style="margin-bottom: 3%; color: white; font-size: 70px;">Parcs et jardins à Nantes</h1>
 
@@ -42,10 +42,10 @@
 				<div class="col-sm" style="margin: 1% 0;">
 					<div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem; border: none; padding: 5px !important;">
 					  <div class="card-body">
-					    <h6 class="card-text">{{ record.fields.nom_complet }}</h6>
-					    <p style="font-size: 13px;">{{ record.fields.adresse }}</p>
+					    <h6 style="line-height: 2px;" class="card-text">{{ record.fields.nom_complet }}</h6>
+					    <p style="font-size: 12px; color: #3c4245;">{{ record.fields.adresse }}</p>
 					    <span v-if="record.fields.sanitaires == 'OUI' " class="badge badge-success">
-					    Sanitaires</span>
+					    Sanitaire</span>
 					    <span v-if="record.fields.sanitaires == 'NON' " class="badge badge-danger">
 					    Sanitaire</span>
 
@@ -84,8 +84,10 @@
 					    <span v-if="record.fields.jeux_enfants == 'NON' " class="badge badge-danger">
 					    Jeux enfants</span>
 					    <br><br>
-					    <p style="font-weight: 800; font-size: 15px;">Comment y accéder ?</p>
-					    <p style="font-size: 12px;">{{ record.fields.acces_transport_commun }}</p>
+					    <div style="line-height: 2px;">
+					    	<p style="font-weight: 800; font-size: 15px;">Comment y accéder ?</p>
+					    	<p style="font-size: 12px; color: #3c4245;">{{ record.fields.acces_transport_commun }}</p>
+					    </div>
 					  </div>
 					</div>
 					<!-- <div id="map">{{ initMap(this.record.fields.location[0],
@@ -101,20 +103,16 @@
 
   	<script>
 		var demo = new Vue({
-
 		  el: '#demo',
-
 		  data: {
 		    branches: ['master', 'dev'],
 		    currentBranch: 'master',
 		    records: null,
 		    afficher: false    
 		  },
-
 		  watch: {
 		    currentBranch: 'fetchData'
 		  },
-
 		  filters: {
 		    truncate: function (v) {
 		      var newline = v.indexOf('\n')
@@ -124,11 +122,9 @@
 		      return v.replace(/T|Z/g, ' ')
 		    }
 		  },
-
 		  created(){
 		  		this.fetchData();
 			},
-
 		  methods: {
 		  	initMap: function(latitude, longitude){
 		  		var uluru = {lat: latitude, lng: longitude};
@@ -138,9 +134,7 @@
 		  	},
 		    fetchData: function () {
 		    	var self = this;
-
 				axios.get('https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_parcs-jardins-nantes&rows=10&facet=libtype&facet=gardien&facet=jeux_enfants&facet=pataugeoire&facet=sanitaires&facet=sanitaires_handicapes&facet=chiens_autorises&facet=jardin_clos&facet=abris&facet=point_eau_potable&facet=table_pique_nique')
-
 				.then(function (response) {
 				    // handle success
 				    console.log(response);
