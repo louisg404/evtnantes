@@ -32,31 +32,74 @@
 	}
   </style>
   </head>
-  
-  <body>
+
+  <body style="background-image: url(wavee.svg); background-repeat: no-repeat;">
   	<div class="container" style="margin-top: 5%; font-family: 'Roboto', sans-serif;" id="demo">
-  		<h3 style="margin-bottom: 3%;">Parcs et jardins à Nantes</h3>
-  		<pre>{{ records }}</pre>
+  		<h1 style="margin-bottom: 3%; color: white; font-size: 70px;">Parcs et jardins à Nantes</h1>
+
   		<div class="row">
-			<div v-if="afficher" v-for="record in records">
-				<div class="col-sm" style="margin-bottom: 5%;">
-					<div class="card" style="width: 18rem; border-left: solid 5px orange;">
+			<div v-for="record in records">
+				<div class="col-sm" style="margin: 1% 0;">
+					<div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem; border: none; padding: 5px !important;">
 					  <div class="card-body">
-					    <h5 class="card-text">{{ record.fields.nom_complet }}</h5>
-					    <p>{{ record.fields.adresse }}</p>
+					    <h6 class="card-text">{{ record.fields.nom_complet }}</h6>
+					    <p style="font-size: 13px;">{{ record.fields.adresse }}</p>
+					    <span v-if="record.fields.sanitaires == 'OUI' " class="badge badge-success">
+					    Sanitaires</span>
+					    <span v-if="record.fields.sanitaires == 'NON' " class="badge badge-danger">
+					    Sanitaire</span>
+
+					    <span v-if="record.fields.jardin_clos == 'OUI' " class="badge badge-success">
+					    Jardin clos</span>
+					    <span v-if="record.fields.jardin_clos == 'NON' " class="badge badge-danger">
+					    Jardin clos</span>
+
+					    <span v-if="record.fields.chiens_autorises == 'OUI' " class="badge badge-success">
+					    Chiens autorisés</span>
+					    <span v-if="record.fields.chiens_autorises == 'NON' " class="badge badge-danger">
+					    Chiens autorisés</span>
+
+					    <span v-if="record.fields.abris == 'OUI' " class="badge badge-success">
+					    Abris</span>
+					    <span v-if="record.fields.abris == 'NON' " class="badge badge-danger">
+					    Abris</span>
+
+					    <span v-if="record.fields.point_eau_potable == 'OUI' " class="badge badge-success">
+					    Eau potable</span>
+					    <span v-if="record.fields.point_eau_potable == 'NON' " class="badge badge-danger">
+					    Eau potable</span>
+
+					    <span v-if="record.fields.table_pique_nique == 'OUI' " class="badge badge-success">
+					    Table de pique-nique</span>
+					    <span v-if="record.fields.table_pique_nique == 'NON' " class="badge badge-danger">
+					    Table de pique-nique</span>
+
+					    <span v-if="record.fields.sanitaires_handicapes == 'OUI' " class="badge badge-success">
+					    Sanitaires handicapés</span>
+					    <span v-if="record.fields.sanitaires_handicapes == 'NON' " class="badge badge-danger">
+					    Sanitaires handicapés</span>
+
+					    <span v-if="record.fields.jeux_enfants == 'OUI' " class="badge badge-success">
+					    Jeux enfants</span>
+					    <span v-if="record.fields.jeux_enfants == 'NON' " class="badge badge-danger">
+					    Jeux enfants</span>
+					    <br><br>
+					    <p style="font-weight: 800; font-size: 15px;">Comment y accéder ?</p>
+					    <p style="font-size: 12px;">{{ record.fields.acces_transport_commun }}</p>
 					  </div>
 					</div>
-					<div id="map">{{ initMap(this.record.fields.location[0],
-					this.record.fields.location[1]) }}</div>
+					<!-- <div id="map">{{ initMap(this.record.fields.location[0],
+					this.record.fields.location[1]) }}</div> -->
 				</div>
   			</div>
+  			
   		</div>	  
 	</div>
+
   	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   	<script>
-
 		var demo = new Vue({
 
 		  el: '#demo',
@@ -98,22 +141,21 @@
 
 				axios.get('https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_parcs-jardins-nantes&rows=10&facet=libtype&facet=gardien&facet=jeux_enfants&facet=pataugeoire&facet=sanitaires&facet=sanitaires_handicapes&facet=chiens_autorises&facet=jardin_clos&facet=abris&facet=point_eau_potable&facet=table_pique_nique')
 
-				  .then(function (response) {
+				.then(function (response) {
 				    // handle success
 				    console.log(response);
 				    self.records = response.data.records;
 				    afficher = true;
-				  })
-				  .catch(function (error) {
+				})
+				  	.catch(function (error) {
 				    // handle error
 				    console.log(error);
-				  })
+				})
 		    }
 		  }
 		})		
   	</script>
-  	
-  	
+
     <style type="text/css">
     	#map {
 		   width: 100%;
